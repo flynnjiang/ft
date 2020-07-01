@@ -3,9 +3,11 @@ STATIC_LIB	= libft.a
 DYNAMIC_LIB	= libft.so
 
 SRC := $(wildcard *.c)
+SRC += $(wildcard */*.c)
 OBJ := $(patsubst %.c,%.o,$(SRC))
 
 CFLAGS  += -fPIC -DMEMWATCH
+CFLAGS  += -I./include
 LDFLAGS	+= -fPIC
 
 
@@ -16,7 +18,8 @@ all: $(DYNAMIC_LIB) $(STATIC_LIB)
 
 
 $(STATIC_LIB) : $(OBJ)
-	${AR} -cvq $@ ${OBJ}
+	@echo AR $@
+	@${AR} -cvq $@ ${OBJ} > /dev/null
 
 $(DYNAMIC_LIB) : $(OBJ)
 	@echo LD $@
@@ -31,4 +34,4 @@ install : $(DYNAMIC_LIB)
 	$(INSTALL) -c -m 644 $(DYNAMIC_LIB) $(INSTALL_LIB_DIR)
 
 clean :
-	rm -f *.o $(DYNAMIC_LIB) $(STATIC_LIB)
+	rm -f $(OBJ) $(DYNAMIC_LIB) $(STATIC_LIB)
